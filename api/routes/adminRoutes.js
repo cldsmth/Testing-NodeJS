@@ -1,11 +1,7 @@
-var router = require('express').Router();
+'use strict';
+var router = require('express').Router(),
+	admin = require('../controllers/adminController');
 
-router.get('/', function(req, res, next) {
-  res.send('Hello admin GET API from TechBrij.com');
-});
- 
-router.post('/', function(req, res, next) {
-  res.send('Hello admin POST API from TechBrij.com');
-});
+router.get('/profile', admin.get_detail);
  
 module.exports = router;
