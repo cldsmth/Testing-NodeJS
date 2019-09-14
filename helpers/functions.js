@@ -1,3 +1,4 @@
+'use strict';
 module.exports.cleanSpace = function(string) {
 	var text = string.trim();
     text = text.replace("'", "");

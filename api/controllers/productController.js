@@ -1,14 +1,14 @@
 'use strict';
 var functions = require('../../helpers/functions'),
-    conn = require('../../helpers/connection');
+    Product = require('../models/productModel');
 
 exports.get_all = function(req, res) {
     try{
-        conn.query('SELECT * FROM product', function(err, rows, fields) {
+        Product.getAll(function(err, data) {
             if(err){
                 functions.ArrayResponse(res, 400, "Error", err);
             }else{
-                functions.ArrayResponse(res, 200, "Data exist", rows);
+                functions.ArrayResponse(res, 200, "Data exist", data);
             }
         });
     }catch(error){
@@ -18,11 +18,11 @@ exports.get_all = function(req, res) {
 
 exports.get_detail = function(req, res) {
     try{
-        conn.query('SELECT * FROM product WHERE product_id = ?', [req.params.id], function(err, rows, fields) {
+        Product.getDetail(req.params.id, function(err, data) {
             if(err){
                 functions.ArrayResponse(res, 400, "Error", err);
             }else{
-                functions.ArrayResponse(res, 200, "Data exist", rows);
+                functions.ArrayResponse(res, 200, "Data exist", data);
             }
         });
     }catch(error){
@@ -32,15 +32,18 @@ exports.get_detail = function(req, res) {
 
 exports.insert_data = function(req, res) {
     try{
-        var name = req.body.name;
-        var price = req.body.price;
-        conn.query('INSERT INTO product (product_name, product_price) values (?, ?)', [name, price], function(err, rows, fields) {
-            if(err){
-                functions.ArrayResponse(res, 400, "Error", err);
-            } else{
-                functions.BaseResponse(res, 200, "Insert success");
-            }
-        });
+        var new_product = new Product(req.body);
+        if(!new_product.name || !new_product.price || !new_product.status){ //handles null error
+            functions.BaseResponse(res, 400, "Please provide name/price/status");
+        }else{
+            Product.insert(new_product, function(err, data) {
+                if(err){
+                    functions.ArrayResponse(res, 400, "Error", err);
+                }else{
+                    functions.BaseResponse(res, 200, "Insert success");
+                }
+            });
+        }
     }catch(error){
         functions.BaseResponse(res, 400, error);
     }
@@ -48,13 +51,10 @@ exports.insert_data = function(req, res) {
 
 exports.update_data = function(req, res) {
     try{
-        var id = req.body.id;
-        var name = req.body.name;
-        var price = req.body.price;
-        conn.query('UPDATE product SET product_name = ?, product_price = ? WHERE product_id = ?', [name, price, id], function(err, rows, fields) {
+        Product.edit(req.params.id, new Product(req.body), function(err, data) {
             if(err){
                 functions.ArrayResponse(res, 400, "Error", err);
-            } else{
+            }else{
                 functions.BaseResponse(res, 200, "Update success");
             }
         });
@@ -65,13 +65,13 @@ exports.update_data = function(req, res) {
 
 exports.delete_data = function(req, res) {
     try{
-        conn.query('DELETE FROM product WHERE product_id = ?', [req.params.id], function(err, rows, fields) {
+        Product.delete(req.params.id, function(err, data) {
             if(err){
                 functions.ArrayResponse(res, 400, "Error", err);
             }else{
                 functions.BaseResponse(res, 200, "Delete success");
             }
-        });
+        })
     }catch(error){
         functions.BaseResponse(res, 400, error);
     }
