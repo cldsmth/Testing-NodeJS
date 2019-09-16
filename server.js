@@ -8,7 +8,7 @@ app.use(bodyParser.json()); //for parsing application/json
 app.use(bodyParser.urlencoded({extended: true})); //for parsing application/xwww-form-urlencoded
 app.use(cors()); //cross origin
 
-app.use('/api', require('./api')); //importing index api for web
+app.use('/', require('./api/routes/indexRoutes')); //importing index api for web
 
 app.listen(port);
 console.log('testing RESTful API server started on: ' + port);
