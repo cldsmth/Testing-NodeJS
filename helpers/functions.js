@@ -1,4 +1,8 @@
 'use strict';
+module.exports.isObjectEmpty = function(data) {
+    return Object.keys(data).length === 0 ? false : true;
+}
+
 module.exports.isEmpty = function(str) {
 	return typeof str == "string" && !str.trim() || typeof str == "undefined" || str === null;
 }

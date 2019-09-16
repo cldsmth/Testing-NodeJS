@@ -9,7 +9,17 @@ exports.ok = function(req, res) {
 	res.end();
 };
 
-exports.invalid = function(req, res) {
+exports.success = function(req, res) {
+	var data = {
+		'status': 200,
+		'message': 'Data exist',
+		'data': req
+	};
+	res.json(data);
+	res.end();
+};
+
+exports.failure = function(req, res) {
 	res.json(req);
 	res.end();
 };
