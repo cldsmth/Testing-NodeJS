@@ -11,15 +11,15 @@ exports.check_email = function(req, res) {
                 functions.checkEmail(email).then(resolve => {
                     response.ok({email: email, result: resolve}, res);
                 }).catch(reject => {
-                    response.invalid({message: 'Invalid e-mail format', result: reject}, res);
+                    response.invalid({status: 400, message: 'Invalid e-mail format', result: reject}, res);
                 });
             }else{
-                response.invalid({message: email+' contains whitespace', result: false}, res);
+                response.invalid({status: 400, message: email+' contains whitespace', result: false}, res);
             }
         }else{
-            response.invalid({message: 'Please provide e-mail', result: false}, res);
+            response.invalid({status: 400, message: 'Please provide e-mail', result: false}, res);
         }
     }catch(error){
-        response.invalid({message: error.toString(), result: false}, res);
+        response.invalid({status: 401, message: error.toString(), result: false}, res);
     }
 };

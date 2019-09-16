@@ -10,11 +10,6 @@ exports.ok = function(req, res) {
 };
 
 exports.invalid = function(req, res) {
-	var data = {
-		'status': 400,
-		'message': req.message,
-		'result': req.result
-	};
-	res.json(data);
+	res.json(req);
 	res.end();
 };
