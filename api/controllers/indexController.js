@@ -1,5 +1,6 @@
 'use strict';
-var functions = require('../../helpers/functions');
+var response = require('../../helpers/response'),
+    functions = require('../../helpers/functions');
 
 exports.check_email = function(req, res) {
     try{
@@ -8,17 +9,17 @@ exports.check_email = function(req, res) {
             if(!functions.isNullOrWhiteSpace(email)){
                 //result callback for function checkEmail
                 functions.checkEmail(email).then(resolve => {
-                    res.status(200).send({status: 200, message: 'E-mail '+email+' is valid', result: resolve});
+                    response.ok({email: email, result: resolve}, res);
                 }).catch(reject => {
-                    res.status(400).send({status: 400, message: 'Invalid e-mail format', result: reject});
+                    response.invalid({message: 'Invalid e-mail format', result: reject}, res);
                 });
             }else{
-                res.status(400).send({status: 400, message: email+' contains whitespace', result: false});
+                response.invalid({message: email+' contains whitespace', result: false}, res);
             }
         }else{
-            res.status(400).send({status: 400, message: 'Please provide e-mail', result: false});
+            response.invalid({message: 'Please provide e-mail', result: false}, res);
         }
     }catch(error){
-        res.status(401).send({status: 401, message: error.toString()});
+        response.invalid({message: error.toString(), result: false}, res);
     }
 };
