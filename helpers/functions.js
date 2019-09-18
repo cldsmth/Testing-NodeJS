@@ -1,6 +1,6 @@
 'use strict';
 module.exports.isObjectEmpty = function(data) {
-    return Object.keys(data).length === 0 ? false : true;
+    return Object.keys(data).length === 0 ? true : false;
 }
 
 module.exports.isEmpty = function(str) {

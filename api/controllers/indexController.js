@@ -31,7 +31,7 @@ exports.get_all = function(req, res) {
             if(errData){
                 response.failure({status: 401, message: errData.toString()}, res);
             }else{
-                if(!functions.isObjectEmpty(resData)){
+                if(functions.isObjectEmpty(resData)){
                     response.failure({status: 400, message: 'No data'}, res);
                 }else{
                     response.success(resData, res);
